@@ -1,116 +1,61 @@
-import { Question, SurveyConfig } from "../types";
+import { SurveyConfig } from '../types';
+import { Question } from './question';
 
 export class Survey {
-  isInitialize: boolean;
-  config: SurveyConfig;
-  currentQuestion: number;
-  container: any;
-
   static cookies = {};
 
-  constructor(surveyConfig: SurveyConfig) {
-    this.isInitialize = false;
-    this.config = surveyConfig;
-    this.currentQuestion = 0;
+  $config: SurveyConfig;
+  $currentQuestion: Question;
+  $questions: Question[];
+  $container: HTMLDivElement;
 
-    window.addEventListener("DOMContentLoaded", () =>
-      setTimeout(() => this.show(), surveyConfig.timeToShow * 1000)
-    );
-  }
-
-  checkConditions(conditions: any, currentAnswer: any) {
-    if (!conditions) return true;
-
-    const dependentQuestion = this.config.questions.find(
-      (question) => question.id === conditions.questionId
-    );
-    const dependentAnswer = (<HTMLInputElement>(
-      document.getElementById("answer")
-    )).value;
-    console.log("here", dependentQuestion, dependentAnswer);
-    return dependentAnswer === conditions.answer;
+  constructor(config: SurveyConfig) {
+    this.$config = config;
+    this.$questions = config.questions.map((question) => new Question(question).set(this));
+    this.$currentQuestion = this.$questions.find((question) => question.$step === 1) as Question;
+    window.addEventListener('DOMContentLoaded', () => setTimeout(() => this.initialize(), config.timeToShow * 1000));
   }
 
   submit() {
-    console.log("Submit form");
+    console.log('Submit form', this.$questions);
   }
 
-  nextQuestion() {
-    const currentAnswer = (<HTMLInputElement>document.getElementById("answer"))
-      .value;
-
-    if (
-      this.checkConditions(
-        this.config.questions[this.currentQuestion].logic,
-        currentAnswer
-      )
-    ) {
-      console.log('pass');
-      document.getElementById(
-        this.config.questions[this.currentQuestion].id
-      )!.style.display = "none";
-      this.currentQuestion++;
-      if (this.currentQuestion < this.config.questions.length) {
-        this.container.innerHTML = "";
-        const newQuestionElement = this.createQuestion(
-          this.config.questions[this.currentQuestion]
-        );
-        this.container.appendChild(newQuestionElement);
-      } else {
-        this.submit();
+  next() {
+    if (this.$currentQuestion.$required) {
+      if (!this.$currentQuestion.$el.value) {
+        return;
       }
     }
-  }
 
-  createQuestion(question: Question) {
-    const questionElement = document.createElement("div");
-    questionElement.setAttribute("id", question.id);
+    let nextQuestion = null;
 
-    const questionText = document.createElement("p");
-    questionText.textContent = question.question;
-
-    questionElement.appendChild(questionText);
-
-    switch (question.type) {
-      case "numeric-scale":
-        const numeric = document.createElement("input");
-        numeric.setAttribute("type", "text");
-        numeric.setAttribute("id", `answer`);
-        questionElement.appendChild(numeric);
-        break;
-
-      case "single-line":
-        const input = document.createElement("input");
-        input.setAttribute("type", "text");
-        // input.setAttribute("id", `answer${question.id}`);
-        input.setAttribute("id", `answer`);
-        questionElement.appendChild(input);
-        break;
-
-      case "multiple-line":
-        const textarea = document.createElement("input");
-        questionElement.appendChild(textarea);
-        break;
+    if (this.$currentQuestion.$logical) {
+      const logic = this.$currentQuestion.logic;
+      if (logic) {
+        nextQuestion = this.$questions.find((question) => question.$id === logic.questionId);
+      }
     }
 
-    const button = document.createElement("button");
-    button.textContent = "next";
-    button.addEventListener("click", this.nextQuestion.bind(this));
-    questionElement.appendChild(button);
+    if (!nextQuestion) {
+      nextQuestion = this.$questions.find((question) => {
+        return question.$step === (this.$currentQuestion.$step as number) + 1;
+      });
+    }
 
-    return questionElement;
+    if (nextQuestion) {
+      this.$currentQuestion = nextQuestion;
+      this.$container.innerHTML = '';
+      this.$container.appendChild(this.$currentQuestion.render());
+    } else {
+      this.submit();
+    }
   }
 
-  show() {
-    this.container = document.createElement("div");
-    this.container.classList.add("rounded-md", "w-[300px]", "p-2", "text-sm");
+  initialize() {
+    this.$container = document.createElement('div');
+    this.$container.classList.add('flex', 'justify-center', 'rounded-md', 'w-[300px]', 'p-2', 'text-sm', 'shadow-md');
+    this.$container.appendChild(this.$currentQuestion.render());
 
-    const currentQuestion = this.createQuestion(
-      this.config.questions[this.currentQuestion]
-    );
-
-    this.container.appendChild(currentQuestion);
-
-    document.body.appendChild(this.container);
+    document.body.appendChild(this.$container);
   }
 }

@@ -1,15 +1,11 @@
-import { FeedbackConfig } from "../types";
+import { FeedbackConfig } from '../types';
 
 export class Feedback {
-  isInitialize: boolean;
-  config: FeedbackConfig;
+  $config: FeedbackConfig;
 
   constructor(feedbackConfig: FeedbackConfig) {
-    this.isInitialize = false;
-    this.config = feedbackConfig;
+    this.$config = feedbackConfig;
   }
 
-  show() {
-    console.log("Show feedback");
-  }
+  show() {}
 }

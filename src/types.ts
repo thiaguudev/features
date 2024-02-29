@@ -4,21 +4,28 @@ export type Config = {
 };
 
 export type SurveyConfig = {
-  questions: Question[]
-  timeToShow: number
+  questions: Question[];
+  timeToShow: number;
 };
 
-export type FeedbackConfig = any;
+export type FeedbackConfig = unknown;
 
-export type QuestionType = "single-line" | "multiple-line" | "numeric-scale";
+export type QuestionType = 'single-line' | 'multiple-line' | 'numeric-scale' | 'multiple-choice';
 
-export type Logic = {};
+export type Logic = {
+  questionId: string;
+  from: number;
+  to: number;
+};
 
 export type Question = {
   id: string;
   main: boolean;
   question: string;
-  logic?: Logic[];
+  logic: Logic[];
   type: QuestionType;
   required: boolean;
+  isConditional?: boolean;
+  step?: number;
+  options: Array<string>;
 };
