@@ -1,4 +1,5 @@
 import { NumericScale, SingleLine, MultipleLine, MultipleChoice } from '../elements';
+import { HTMLDivElementInput } from '../elements/multiple-choice';
 import { QuestionType } from '../types';
 import type { Question as IQuestion, Logic } from '../types';
 import { arrayFrom, arrayIsEmpty } from '../utils';
@@ -14,7 +15,7 @@ export class Question {
   $logic: Logic[];
   $survey: Survey;
   $options: Array<string>;
-  $el: HTMLInputElement | HTMLTextAreaElement;
+  $el: HTMLInputElement | HTMLTextAreaElement | HTMLDivElementInput;
 
   constructor({ id, type, step, isConditional, question, required, logic, options }: IQuestion) {
     this.$id = id;
@@ -61,7 +62,7 @@ export class Question {
         break;
 
       case 'multiple-choice':
-        this.$el = new MultipleChoice(`answer-${this.$id}`).$el;
+        this.$el = new MultipleChoice(`answer-${this.$id}`, this.$options).$el;
         break;
     }
 
