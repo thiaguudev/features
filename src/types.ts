@@ -20,7 +20,6 @@ export type Logic = {
 
 export type Question = {
   id: string;
-  main: boolean;
   question: string;
   logic: Logic[];
   type: QuestionType;

@@ -1,18 +1,16 @@
-export type HTMLDivElementInput = HTMLDivElement & { value: string };
-
 export class MultipleChoice {
-  $el: HTMLDivElementInput;
+  $el: any;
   $options: Array<string>;
 
   constructor(id: string, options: Array<string>) {
-    this.$el = document.createElement('div') as HTMLDivElementInput;
+    this.$el = document.createElement('div');
     this.$options = options;
     this.$el.id = id;
     this.$options.forEach((option) => {
       const input = document.createElement('input');
       input.type = 'radio';
       input.name = 'choice';
-      input.id = option;
+      input.value = option;
 
       const label = document.createElement('label');
       label.htmlFor = option;
@@ -24,6 +22,6 @@ export class MultipleChoice {
   }
 
   get value() {
-    return (<HTMLDivElementInput>document.querySelector('[name="score"]')).value;
+    return (<any>document.querySelector('[name="choice"]:checked'))?.value;
   }
 }

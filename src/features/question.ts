@@ -1,5 +1,4 @@
 import { NumericScale, SingleLine, MultipleLine, MultipleChoice } from '../elements';
-import { HTMLDivElementInput } from '../elements/multiple-choice';
 import { QuestionType } from '../types';
 import type { Question as IQuestion, Logic } from '../types';
 import { arrayFrom, arrayIsEmpty } from '../utils';
@@ -15,7 +14,7 @@ export class Question {
   $logic: Logic[];
   $survey: Survey;
   $options: Array<string>;
-  $el: HTMLInputElement | HTMLTextAreaElement | HTMLDivElementInput;
+  $input: any;
 
   constructor({ id, type, step, isConditional, question, required, logic, options }: IQuestion) {
     this.$id = id;
@@ -34,7 +33,7 @@ export class Question {
   }
 
   get logic() {
-    return this.$logic.find((logic) => arrayFrom(logic.from, logic.to).includes(+this.$el.value));
+    return this.$logic.find((logic) => arrayFrom(logic.from, logic.to).includes(+this.$input.value));
   }
 
   get $logical() {
@@ -50,19 +49,19 @@ export class Question {
 
     switch (this.$type) {
       case 'numeric-scale':
-        this.$el = new NumericScale(`answer-${this.$id}`).$el;
+        this.$input = new NumericScale(`answer-${this.$id}`);
         break;
 
       case 'single-line':
-        this.$el = new SingleLine(`answer-${this.$id}`).$el;
+        this.$input = new SingleLine(`answer-${this.$id}`);
         break;
 
       case 'multiple-line':
-        this.$el = new MultipleLine(`answer-${this.$id}`).$el;
+        this.$input = new MultipleLine(`answer-${this.$id}`);
         break;
 
       case 'multiple-choice':
-        this.$el = new MultipleChoice(`answer-${this.$id}`, this.$options).$el;
+        this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
         break;
     }
 
@@ -79,8 +78,9 @@ export class Question {
     );
     button.onclick = this.$survey.next.bind(this.$survey);
 
+    console.log(this.$input)
     question.appendChild(text);
-    question.appendChild(this.$el);
+    question.appendChild(this.$input.$el);
     question.appendChild(button);
     return question;
   }

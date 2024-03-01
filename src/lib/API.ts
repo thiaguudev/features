@@ -15,7 +15,6 @@ export class API {
       questions: [
         {
           id: 'sw-18-61',
-          main: true,
           type: 'numeric-scale',
           question: 'How likely is it that you would recommend [Organization X] to a friend or colleague?',
           required: true,
@@ -24,7 +23,6 @@ export class API {
         },
         {
           id: 'sw-18-62',
-          main: false,
           type: 'single-line',
           question: 'How easy was using Refiner so far?',
           required: false,
@@ -39,7 +37,6 @@ export class API {
         },
         {
           id: 'sw-18-63',
-          main: false,
           type: 'multiple-line',
           question: 'On a scale of 1-7, how would you rate the effort it takes to use our X feature?',
           required: false,
@@ -48,13 +45,20 @@ export class API {
         },
         {
           id: 'sw-18-64',
-          main: false,
           isConditional: true,
           type: 'multiple-choice',
           question: 'On a scale of 1-7, how easy was it to use the X feature?',
           required: true,
           options: ['one', 'two'],
           logic: [],
+        },
+        {
+          id: 'sw-18-65',
+          type: 'single-line',
+          question: 'Finalzinho do dia hein',
+          required: true,
+          logic: [],
+          step: 4,
         },
       ] as Question[],
       timeToShow: 0,

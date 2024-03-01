@@ -21,22 +21,23 @@ export class Survey {
   }
 
   next() {
-    console.log('next', this.$current);
     if (this.$current.$required) {
-      if (!this.$current.$el.value) {
+      console.log('here', this.$current.$input.value)
+      if (!this.$current.$input.value) {
         return;
       }
     }
-
+    
     let nextQuestion = null;
-
+    
     if (this.$current.$logical) {
       const logic = this.$current.logic;
       if (logic) {
         nextQuestion = this.$questions.find((question) => question.$id === logic.questionId);
       }
     }
-
+    console.log('next', nextQuestion);
+    
     if (!nextQuestion) {
       nextQuestion = this.$questions.find((question) => {
         return question.$step === (this.$current.$step as number) + 1;
