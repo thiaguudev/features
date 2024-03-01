@@ -13,7 +13,7 @@ export class API {
       thanksMessage: 'Thanks for your help!',
       skipComment: false,
       buttonTextColor: 'text-white',
-      buttonBackgroundColor: 'bg-emerald-400',
+      buttonBackgroundColor: 'bg-black',
       isMobile: true,
       questions: [
         {

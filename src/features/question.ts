@@ -57,18 +57,7 @@ export class Question {
   }
 
   $next() {
-    const $button = document.createElement('button');
-    $button.classList.add('font-bold');
-    $button.textContent = 'Next';
-    $button.classList.add(
-      'p-2',
-      'w-16',
-      'ml-auto',
-      'bg-emerald-600',
-      'text-white',
-      'rounded-md',
-      'hover:bg-emerald-500',
-    );
+    const $button = this.$survey.$style.$button();
     $button.onclick = this.$survey.$next.bind(this.$survey);
     return $button;
   }

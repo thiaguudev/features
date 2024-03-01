@@ -7,6 +7,21 @@ export class Style {
     this.$config = config;
   }
 
+  $button() {
+    const $button = document.createElement('button');
+    $button.textContent = 'Next';
+    $button.classList.add(
+      'p-2',
+      'w-16',
+      'ml-auto',
+      'font-bold',
+      'rounded-3xl',
+      this.$config.buttonTextColor,
+      this.$config.buttonBackgroundColor,
+    );
+    return $button;
+  }
+
   $start() {
     const $start = document.createElement('button');
     $start.textContent = 'Start';
@@ -14,8 +29,8 @@ export class Style {
       'p-2',
       'w-16',
       'ml-auto',
-      'rounded-md',
       'font-bold',
+      'rounded-3xl',
       this.$config.buttonTextColor,
       this.$config.buttonBackgroundColor,
     );
@@ -37,13 +52,16 @@ export class Style {
   $text(text: string) {
     const $text = document.createElement('p');
     $text.textContent = text;
-    $text.classList.add('font-bold');
+    $text.classList.add('font-bold', 'text-xl');
     return $text;
   }
 
   $container() {
     const $container = document.createElement('div');
     $container.classList.add(
+      'bg-gradient-to-r',
+      'from-cyan-500',
+      'to-blue-500',
       'absolute',
       'bottom-0',
       'left-0',
@@ -53,7 +71,7 @@ export class Style {
       'flex-col',
       'items-center',
       'justify-center',
-      'rounded-md',
+      'rounded-t-2xl',
       'p-2',
       'text-sm',
       'shadow-md',
