@@ -1,22 +1,26 @@
 import { Config, Question } from '../types';
 
 export class API {
-  static async post() {
-    console.log('submit form');
-  }
+  static async $post() {}
 
-  static async get(config: Config) {
+  static async $get(config: Config) {
     return {
       ...config,
       id: 'sw-85-rp',
       type: 'nps',
       hasFeedback: true,
-      welcomeMessage: '',
+      welcomeMessage: 'Welcome. Can you help us?',
+      thanksMessage: 'Thanks for your help!',
+      skipComment: false,
+      buttonTextColor: 'text-white',
+      buttonBackgroundColor: 'bg-emerald-400',
+      isMobile: true,
       questions: [
         {
           id: 'sw-18-61',
           type: 'numeric-scale',
-          question: 'How likely is it that you would recommend [Organization X] to a friend or colleague?',
+          question:
+            'How likely is it that you would recommend [Organization X] to a friend or colleague?',
           required: true,
           logic: [],
           step: 1,
@@ -38,7 +42,8 @@ export class API {
         {
           id: 'sw-18-63',
           type: 'multiple-line',
-          question: 'On a scale of 1-7, how would you rate the effort it takes to use our X feature?',
+          question:
+            'On a scale of 1-7, how would you rate the effort it takes to use our X feature?',
           required: false,
           logic: [],
           step: 3,
@@ -51,14 +56,6 @@ export class API {
           required: true,
           options: ['one', 'two'],
           logic: [],
-        },
-        {
-          id: 'sw-18-65',
-          type: 'single-line',
-          question: 'Finalzinho do dia hein',
-          required: true,
-          logic: [],
-          step: 4,
         },
       ] as Question[],
       timeToShow: 0,

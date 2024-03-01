@@ -2,22 +2,23 @@ import { API } from './lib/API';
 import { Config } from './types';
 import { Survey } from './features/survey';
 import { Feedback } from './features/feedback';
+import { mobileCheck } from './utils';
 import './style.css';
 
 class App {
   constructor(config: Config) {
-    this.initialize(config);
+    this.$initialize(config);
   }
 
-  async initialize(config: Config) {
-    const response = await API.get(config);
+  async $initialize(config: Config) {
+    const $response = await API.$get(config);
+    const $isMobile = mobileCheck();
 
-    if (response.hasFeedback) {
-      const feedback = new Feedback(config);
-      feedback.show();
-    }
+    if (!$response.isMobile && $isMobile) return;
 
-    new Survey(response);
+    if ($response.hasFeedback) new Feedback(config);
+
+    new Survey($response);
   }
 }
 

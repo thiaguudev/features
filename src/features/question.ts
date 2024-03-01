@@ -1,4 +1,9 @@
-import { NumericScale, SingleLine, MultipleLine, MultipleChoice } from '../elements';
+import {
+  NumericScale,
+  SingleLine,
+  MultipleLine,
+  MultipleChoice,
+} from '../elements';
 import { QuestionType } from '../types';
 import type { Question as IQuestion, Logic } from '../types';
 import { arrayFrom, arrayIsEmpty } from '../utils';
@@ -14,9 +19,18 @@ export class Question {
   $logic: Logic[];
   $survey: Survey;
   $options: Array<string>;
-  $input: any;
+  $input: MultipleChoice | MultipleLine | SingleLine | NumericScale;
 
-  constructor({ id, type, step, isConditional, question, required, logic, options }: IQuestion) {
+  constructor({
+    id,
+    type,
+    step,
+    isConditional,
+    question,
+    required,
+    logic,
+    options,
+  }: IQuestion) {
     this.$id = id;
     this.$type = type;
     this.$step = step;
@@ -27,47 +41,26 @@ export class Question {
     this.$options = options;
   }
 
-  set(survey: Survey) {
+  $set(survey: Survey) {
     this.$survey = survey;
     return this;
   }
 
   get logic() {
-    return this.$logic.find((logic) => arrayFrom(logic.from, logic.to).includes(+this.$input.value));
+    return this.$logic.find((logic) =>
+      arrayFrom(logic.from, logic.to).includes(+this.$input.value),
+    );
   }
 
   get $logical() {
     return !arrayIsEmpty(this.$logic);
   }
 
-  render() {
-    const question = document.createElement('div');
-    question.classList.add('flex', 'flex-col', 'gap-3');
-
-    const text = document.createElement('p');
-    text.textContent = this.$question;
-
-    switch (this.$type) {
-      case 'numeric-scale':
-        this.$input = new NumericScale(`answer-${this.$id}`);
-        break;
-
-      case 'single-line':
-        this.$input = new SingleLine(`answer-${this.$id}`);
-        break;
-
-      case 'multiple-line':
-        this.$input = new MultipleLine(`answer-${this.$id}`);
-        break;
-
-      case 'multiple-choice':
-        this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
-        break;
-    }
-
-    const button = document.createElement('button');
-    button.textContent = 'Next';
-    button.classList.add(
+  $next() {
+    const $button = document.createElement('button');
+    $button.classList.add('font-bold');
+    $button.textContent = 'Next';
+    $button.classList.add(
       'p-2',
       'w-16',
       'ml-auto',
@@ -76,12 +69,28 @@ export class Question {
       'rounded-md',
       'hover:bg-emerald-500',
     );
-    button.onclick = this.$survey.next.bind(this.$survey);
+    $button.onclick = this.$survey.$next.bind(this.$survey);
+    return $button;
+  }
 
-    console.log(this.$input)
-    question.appendChild(text);
-    question.appendChild(this.$input.$el);
-    question.appendChild(button);
-    return question;
+  render() {
+    if (this.$type === 'numeric-scale') {
+      this.$input = new NumericScale(`answer-${this.$id}`);
+    } else if (this.$type === 'single-line') {
+      this.$input = new SingleLine(`answer-${this.$id}`);
+    } else if (this.$type === 'multiple-line') {
+      this.$input = new MultipleLine(`answer-${this.$id}`);
+    } else {
+      this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
+    }
+
+    const $question = this.$survey.$style.$question();
+    const $text = this.$survey.$style.$text(this.$question);
+    const $button = this.$next();
+
+    $question.appendChild($text);
+    $question.appendChild(this.$input.$el);
+    $question.appendChild($button);
+    return $question;
   }
 }

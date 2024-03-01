@@ -5,12 +5,20 @@ export type Config = {
 
 export type SurveyConfig = {
   questions: Question[];
+  welcomeMessage: string;
   timeToShow: number;
+  thanksMessage: string;
+  buttonTextColor: string;
+  buttonBackgroundColor: string;
 };
 
 export type FeedbackConfig = unknown;
 
-export type QuestionType = 'single-line' | 'multiple-line' | 'numeric-scale' | 'multiple-choice';
+export type QuestionType =
+  | 'single-line'
+  | 'multiple-line'
+  | 'numeric-scale'
+  | 'multiple-choice';
 
 export type Logic = {
   questionId: string;

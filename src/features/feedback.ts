@@ -5,7 +5,10 @@ export class Feedback {
 
   constructor(feedbackConfig: FeedbackConfig) {
     this.$config = feedbackConfig;
+    this.$initialize();
   }
 
-  show() {}
+  $initialize() {
+    console.log('Feedback show');
+  }
 }

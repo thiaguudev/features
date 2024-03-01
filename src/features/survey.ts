@@ -1,5 +1,6 @@
-import { SurveyConfig } from '../types';
 import { Question } from './question';
+import { SurveyConfig } from '../types';
+import { Style } from '../lib/style';
 
 export class Survey {
   static cookies = {};
@@ -8,56 +9,93 @@ export class Survey {
   $current: Question;
   $questions: Question[];
   $container: HTMLDivElement;
+  $style: Style;
 
   constructor(config: SurveyConfig) {
     this.$config = config;
-    this.$questions = config.questions.map((question) => new Question(question).set(this));
-    this.$current = this.$questions.find((question) => question.$step === 1) as Question;
-    window.addEventListener('DOMContentLoaded', () => setTimeout(() => this.initialize(), config.timeToShow * 1000));
+    this.$questions = config.questions.map((question) =>
+      new Question(question).$set(this),
+    );
+    this.$style = new Style(config);
+    window.addEventListener('DOMContentLoaded', () =>
+      setTimeout(this.$initialize.bind(this), config.timeToShow * 1000),
+    );
   }
 
-  submit() {
-    console.log('Submit form', this.$questions);
+  $clear() {
+    this.$container.innerHTML = '';
   }
 
-  next() {
-    if (this.$current.$required) {
-      console.log('here', this.$current.$input.value)
-      if (!this.$current.$input.value) {
-        return;
-      }
+  $end() {
+    setTimeout(() => this.$container.remove(), 2000);
+  }
+
+  $welcome() {
+    const $welcome = this.$style.$text(this.$config.welcomeMessage);
+    this.$container.appendChild($welcome);
+  }
+
+  $thanks() {
+    const $thanks = this.$style.$text(this.$config.thanksMessage);
+    this.$container.appendChild($thanks);
+  }
+
+  $submit() {
+    console.log('Submitting form', this.$questions);
+    const $success = true;
+    if ($success) {
+      this.$thanks();
+      this.$end();
     }
-    
-    let nextQuestion = null;
-    
+  }
+
+  $next() {
+    if (this.$current.$required) if (!this.$current.$input.value) return;
+
+    let $question = null;
+
     if (this.$current.$logical) {
       const logic = this.$current.logic;
       if (logic) {
-        nextQuestion = this.$questions.find((question) => question.$id === logic.questionId);
+        $question = this.$questions.find(
+          (question) => question.$id === logic.questionId,
+        );
       }
     }
-    console.log('next', nextQuestion);
-    
-    if (!nextQuestion) {
-      nextQuestion = this.$questions.find((question) => {
+
+    if (!$question) {
+      $question = this.$questions.find((question) => {
         return question.$step === (this.$current.$step as number) + 1;
       });
     }
 
-    if (nextQuestion) {
-      this.$current = nextQuestion;
-      this.$container.innerHTML = '';
+    this.$clear();
+
+    if ($question) {
+      this.$current = $question;
       this.$container.appendChild(this.$current.render());
     } else {
-      this.submit();
+      this.$submit();
     }
   }
 
-  initialize() {
-    this.$container = document.createElement('div');
-    this.$container.classList.add('flex', 'justify-center', 'rounded-md', 'w-[300px]', 'p-2', 'text-sm', 'shadow-md');
+  $start() {
+    this.$current = this.$questions.find(
+      (question) => question.$step === 1,
+    ) as Question;
+    this.$clear();
     this.$container.appendChild(this.$current.render());
+  }
 
+  $initialize() {
+    this.$container = this.$style.$container();
+
+    this.$welcome();
+
+    const $start = this.$style.$start();
+    $start.onclick = this.$start.bind(this);
+
+    this.$container.appendChild($start);
     document.body.appendChild(this.$container);
   }
 }
