@@ -15,6 +15,7 @@ export class API {
       buttonTextColor: 'text-white',
       buttonBackgroundColor: 'bg-black',
       isMobile: true,
+      timeToShow: 0,
       questions: [
         {
           id: 'sw-18-61',
@@ -24,6 +25,8 @@ export class API {
           required: true,
           logic: [],
           step: 1,
+          from: 3,
+          to: 9
         },
         {
           id: 'sw-18-62',
@@ -58,7 +61,6 @@ export class API {
           logic: [],
         },
       ] as Question[],
-      timeToShow: 0,
     };
   }
 }

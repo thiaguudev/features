@@ -16,6 +16,8 @@ export class Question {
   $isConditional?: boolean;
   $question: string;
   $required: boolean;
+  $from: number | null;
+  $to: number | null;
   $logic: Logic[];
   $survey: Survey;
   $options: Array<string>;
@@ -30,6 +32,8 @@ export class Question {
     required,
     logic,
     options,
+    from,
+    to,
   }: IQuestion) {
     this.$id = id;
     this.$type = type;
@@ -38,6 +42,8 @@ export class Question {
     this.$question = question;
     this.$required = required;
     this.$logic = logic;
+    this.$from = from;
+    this.$to = to;
     this.$options = options;
   }
 
@@ -62,16 +68,18 @@ export class Question {
     return $button;
   }
 
-  render() {
-    if (this.$type === 'numeric-scale') {
-      this.$input = new NumericScale(`answer-${this.$id}`);
-    } else if (this.$type === 'single-line') {
+  $render() {
+    if (this.$type === 'numeric-scale')
+      this.$input = new NumericScale(
+        `answer-${this.$id}`,
+        this.$from as number,
+        this.$to as number,
+      );
+    else if (this.$type === 'single-line')
       this.$input = new SingleLine(`answer-${this.$id}`);
-    } else if (this.$type === 'multiple-line') {
+    else if (this.$type === 'multiple-line')
       this.$input = new MultipleLine(`answer-${this.$id}`);
-    } else {
-      this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
-    }
+    else this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
 
     const $question = this.$survey.$style.$question();
     const $text = this.$survey.$style.$text(this.$question);

@@ -35,4 +35,6 @@ export type Question = {
   isConditional?: boolean;
   step?: number;
   options: Array<string>;
+  from: number | null;
+  to: number;
 };

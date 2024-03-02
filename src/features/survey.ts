@@ -51,7 +51,7 @@ export class Survey {
 
   $next() {
     if (this.$current.$required) if (!this.$current.$input.value) return;
-
+    console.log('value', this.$questions);
     let $question = null;
 
     if (this.$current.$logical) {
@@ -73,7 +73,7 @@ export class Survey {
 
     if ($question) {
       this.$current = $question;
-      this.$container.appendChild(this.$current.render());
+      this.$container.appendChild(this.$current.$render());
     } else {
       this.$submit();
     }
@@ -84,7 +84,7 @@ export class Survey {
       (question) => question.$step === 1,
     ) as Question;
     this.$clear();
-    this.$container.appendChild(this.$current.render());
+    this.$container.appendChild(this.$current.$render());
   }
 
   $initialize() {
