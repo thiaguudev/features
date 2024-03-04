@@ -1,9 +1,8 @@
 export class MultipleLine {
   $el: HTMLTextAreaElement;
 
-  constructor(id: string) {
+  constructor() {
     this.$el = document.createElement('textarea');
-    this.$el.id = id;
   }
 
   get $value() {

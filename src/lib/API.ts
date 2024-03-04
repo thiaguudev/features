@@ -17,16 +17,25 @@ export class API {
       isMobile: true,
       timeToShow: 0,
       questions: [
+        // {
+        //   id: 'sw-18-61',
+        //   type: 'numeric-scale',
+        //   question:
+        //     'How likely is it that you would recommend [Organization X] to a friend or colleague?',
+        //   required: true,
+        //   logic: [],
+        //   step: 1,
+        //   from: 1,
+        //   to: 9,
+        // },
         {
           id: 'sw-18-61',
-          type: 'numeric-scale',
+          type: 'thumbs',
           question:
             'How likely is it that you would recommend [Organization X] to a friend or colleague?',
           required: true,
           logic: [],
           step: 1,
-          from: 3,
-          to: 9
         },
         {
           id: 'sw-18-62',

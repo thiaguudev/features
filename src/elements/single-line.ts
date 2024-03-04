@@ -1,15 +1,13 @@
 export class SingleLine {
   $el: HTMLInputElement;
 
-  constructor(id: string) {
+  constructor() {
     this.$el = document.createElement('input');
-    this.$el.id = id;
-
-    this.$el.addEventListener('change', this.$onchange.bind(this))
+    this.$el.addEventListener('change', this.$onchange.bind(this));
   }
 
   $onchange() {
-    console.log('onchange')
+    console.log('onchange');
   }
 
   get $value() {

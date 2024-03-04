@@ -3,6 +3,7 @@ import { Config } from './types';
 import { Survey } from './features/survey';
 import { Feedback } from './features/feedback';
 import { mobileCheck } from './utils';
+
 import './style.css';
 
 class App {

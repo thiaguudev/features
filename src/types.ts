@@ -18,7 +18,8 @@ export type QuestionType =
   | 'single-line'
   | 'multiple-line'
   | 'numeric-scale'
-  | 'multiple-choice';
+  | 'multiple-choice'
+  | 'thumbs';
 
 export type Logic = {
   questionId: string;
@@ -35,6 +36,6 @@ export type Question = {
   isConditional?: boolean;
   step?: number;
   options: Array<string>;
-  from: number | null;
-  to: number;
+  from?: number;
+  to?: number;
 };

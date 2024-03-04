@@ -8,6 +8,5 @@ export class Feedback {
     this.$initialize();
   }
 
-  $initialize() {
-  }
+  $initialize() {}
 }

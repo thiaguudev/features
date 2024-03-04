@@ -3,6 +3,9 @@ import {
   SingleLine,
   MultipleLine,
   MultipleChoice,
+  Thumbs,
+  Stars,
+  Smileys,
 } from '../elements';
 import { QuestionType } from '../types';
 import type { Question as IQuestion, Logic } from '../types';
@@ -16,8 +19,8 @@ export class Question {
   $isConditional?: boolean;
   $question: string;
   $required: boolean;
-  $from: number | null;
-  $to: number | null;
+  $from?: number;
+  $to?: number;
   $logic: Logic[];
   $survey: Survey;
   $options: Array<string>;
@@ -70,16 +73,14 @@ export class Question {
 
   $render() {
     if (this.$type === 'numeric-scale')
-      this.$input = new NumericScale(
-        `answer-${this.$id}`,
-        this.$from as number,
-        this.$to as number,
-      );
-    else if (this.$type === 'single-line')
-      this.$input = new SingleLine(`answer-${this.$id}`);
-    else if (this.$type === 'multiple-line')
-      this.$input = new MultipleLine(`answer-${this.$id}`);
-    else this.$input = new MultipleChoice(`answer-${this.$id}`, this.$options);
+      this.$input = new NumericScale(this.$from as number, this.$to as number);
+    else if (this.$type === 'single-line') this.$input = new SingleLine();
+    else if (this.$type === 'multiple-line') this.$input = new MultipleLine();
+    else if (this.$type === 'multiple-choice')
+      this.$input = new MultipleChoice(this.$options);
+    else if (this.$type === 'thumbs') this.$input = new Thumbs();
+    else if (this.$type === 'stars') this.$input = new Stars();
+    else if (this.$type === 'smileys') this.$input = new Smileys();
 
     const $question = this.$survey.$style.$question();
     const $text = this.$survey.$style.$text(this.$question);

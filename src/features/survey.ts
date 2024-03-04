@@ -42,6 +42,9 @@ export class Survey {
 
   $submit() {
     const $success = true;
+    this.$questions.forEach((question) => {
+      console.log(`${question.$question} -> ${question.$input?.$value}`);
+    });
     if ($success) {
       this.$thanks();
       this.$end();

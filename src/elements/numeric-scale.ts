@@ -4,10 +4,9 @@ export class NumericScale {
   $el: HTMLDivElement;
   $value: string;
 
-  constructor(id: string, start: number, end: number) {
+  constructor(start: number, end: number) {
     this.$el = document.createElement('div');
     this.$el.classList.add('flex', 'items-center', 'justify-center', 'gap-1');
-    this.$el.id = id;
 
     arrayFrom(start, end).forEach((value) => {
       const $value = String(value);
@@ -22,13 +21,15 @@ export class NumericScale {
 
       $input.addEventListener('change', this.$onchange.bind(this));
 
+      $label.textContent = $value;
+
       $label.classList.add(
         'p-3',
-        'bg-gray-500',
-        'w-10',
-        'text-white',
+        'w-16',
+        'text-lg',
         'bg-gray-100',
         'cursor-pointer',
+        'rounded-xl',
       );
 
       $container.appendChild($input);
@@ -38,6 +39,8 @@ export class NumericScale {
   }
 
   $onchange(e: Event) {
-    if (e.target instanceof HTMLInputElement) this.$value = e.target.value;
+    if (e.target instanceof HTMLInputElement) {
+      this.$value = e.target.value;
+    }
   }
 }

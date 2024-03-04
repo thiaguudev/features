@@ -3,10 +3,9 @@ export class MultipleChoice {
   $options: Array<string>;
   $value: string;
 
-  constructor(id: string, options: Array<string>) {
+  constructor(options: Array<string>) {
     this.$el = document.createElement('div');
     this.$options = options;
-    this.$el.id = id;
     this.$options.forEach((option) => {
       const $input = document.createElement('input');
       $input.type = 'radio';
@@ -25,6 +24,8 @@ export class MultipleChoice {
   }
 
   $onchange(e: Event) {
-    if (e.target instanceof HTMLInputElement) this.$value = e.target.value;
+    if (e.target instanceof HTMLInputElement) {
+      this.$value = e.target.value;
+    }
   }
 }

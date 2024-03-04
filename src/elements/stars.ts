@@ -1,12 +1,14 @@
 export class Stars {
-  $el: HTMLTextAreaElement;
+  $el: HTMLDivElement;
+  $value: string;
 
-  constructor(id: string) {
-    this.$el = document.createElement('textarea');
-    this.$el.id = id;
+  constructor() {
+    this.$el = document.createElement('div');
   }
 
-  get $value() {
-    return this.$el.value.trim();
+  $onchange(e: Event) {
+    if (e.target instanceof HTMLInputElement) {
+      this.$value = e.target.value;
+    }
   }
 }
