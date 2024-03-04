@@ -9,6 +9,5 @@ export class Feedback {
   }
 
   $initialize() {
-    console.log('Feedback show');
   }
 }

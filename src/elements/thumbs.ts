@@ -1,4 +1,4 @@
-export class MultipleLine {
+export class Thumbs {
   $el: HTMLTextAreaElement;
 
   constructor(id: string) {

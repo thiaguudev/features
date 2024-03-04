@@ -52,7 +52,7 @@ export class Style {
   $text(text: string) {
     const $text = document.createElement('p');
     $text.textContent = text;
-    $text.classList.add('font-bold', 'text-xl');
+    $text.classList.add('font-bold', 'text-xl', 'text-white');
     return $text;
   }
 

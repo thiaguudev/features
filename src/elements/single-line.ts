@@ -4,9 +4,15 @@ export class SingleLine {
   constructor(id: string) {
     this.$el = document.createElement('input');
     this.$el.id = id;
+
+    this.$el.addEventListener('change', this.$onchange.bind(this))
   }
 
-  get value() {
-    return this.$el.value;
+  $onchange() {
+    console.log('onchange')
+  }
+
+  get $value() {
+    return this.$el.value.trim();
   }
 }

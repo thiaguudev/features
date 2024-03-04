@@ -1,4 +1,4 @@
-export class MultipleLine {
+export class Smileys {
   $el: HTMLTextAreaElement;
 
   constructor(id: string) {

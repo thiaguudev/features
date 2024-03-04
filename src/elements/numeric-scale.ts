@@ -1,7 +1,8 @@
-import { arrayFrom } from "../utils";
+import { arrayFrom } from '../utils';
 
 export class NumericScale {
   $el: HTMLDivElement;
+  $value: string;
 
   constructor(id: string, start: number, end: number) {
     this.$el = document.createElement('div');
@@ -9,26 +10,26 @@ export class NumericScale {
     this.$el.id = id;
 
     arrayFrom(start, end).forEach((value) => {
+      const $value = String(value);
       const $container = document.createElement('div');
       const $input = document.createElement('input');
       const $label = document.createElement('label');
 
       $input.type = 'radio';
       $input.name = 'choice';
-      $input.value = `${value}`;
-      $input.id = `${value}`;
-      $label.textContent = `${value}`;
+      $input.value = $input.id = $input.textContent = $label.htmlFor = $value;
       $input.classList.add('hidden');
+
+      $input.addEventListener('change', this.$onchange.bind(this));
 
       $label.classList.add(
         'p-3',
-        'bg-red-500',
+        'bg-gray-500',
         'w-10',
-        'text-black',
+        'text-white',
         'bg-gray-100',
-        'cursor-pointer'
+        'cursor-pointer',
       );
-      $label.htmlFor = `${value}`;
 
       $container.appendChild($input);
       $container.appendChild($label);
@@ -36,10 +37,7 @@ export class NumericScale {
     });
   }
 
-  get value() {
-    console.log('iii', (<HTMLInputElement>document.querySelector('[name="choice"]:checked'))
-    ?.value)
-    return (<HTMLInputElement>document.querySelector('[name="choice"]:checked'))
-      ?.value;
+  $onchange(e: Event) {
+    if (e.target instanceof HTMLInputElement) this.$value = e.target.value;
   }
 }

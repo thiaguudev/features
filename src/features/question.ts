@@ -54,7 +54,7 @@ export class Question {
 
   get logic() {
     return this.$logic.find((logic) =>
-      arrayFrom(logic.from, logic.to).includes(+this.$input.value),
+      arrayFrom(logic.from, logic.to).includes(+this.$input.$value),
     );
   }
 

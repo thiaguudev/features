@@ -1,4 +1,4 @@
-export class MultipleLine {
+export class Stars {
   $el: HTMLTextAreaElement;
 
   constructor(id: string) {

@@ -20,7 +20,7 @@ type String // NPS / CES / CSAT / 5-Stars / Smileys / eNPS / Thumbs / PMF
 title String // title of survey
 isAnonymous Boolean @default(true) // if survey is anonymous or no
 status String // sketch | test | inactive | active  
- onMobile Boolean // if survey is visible on mobile
+onMobile Boolean // if survey is visible on mobile
 welcomeMessage String // require Plan Plus or more
 skipComment Boolean @default(false) // if skip comment in survey
 commentMessage String // require Plan Plus or more

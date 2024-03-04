@@ -41,7 +41,6 @@ export class Survey {
   }
 
   $submit() {
-    console.log('Submitting form', this.$questions);
     const $success = true;
     if ($success) {
       this.$thanks();
@@ -50,8 +49,7 @@ export class Survey {
   }
 
   $next() {
-    if (this.$current.$required) if (!this.$current.$input.value) return;
-    console.log('value', this.$questions);
+    if (this.$current.$required) if (!this.$current.$input.$value) return;
     let $question = null;
 
     if (this.$current.$logical) {

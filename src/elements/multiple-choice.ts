@@ -1,6 +1,7 @@
 export class MultipleChoice {
   $el: HTMLDivElement;
   $options: Array<string>;
+  $value: string;
 
   constructor(id: string, options: Array<string>) {
     this.$el = document.createElement('div');
@@ -12,6 +13,8 @@ export class MultipleChoice {
       $input.name = 'choice';
       $input.value = option;
 
+      $input.addEventListener('change', this.$onchange.bind(this));
+
       const $label = document.createElement('label');
       $label.htmlFor = option;
       $label.textContent = option;
@@ -21,8 +24,7 @@ export class MultipleChoice {
     });
   }
 
-  get value() {
-    return (<HTMLInputElement>document.querySelector('[name="choice"]:checked'))
-      ?.value;
+  $onchange(e: Event) {
+    if (e.target instanceof HTMLInputElement) this.$value = e.target.value;
   }
 }
